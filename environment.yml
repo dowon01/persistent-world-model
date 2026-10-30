@@ -1,0 +1,22 @@
+# conda env create -f environment.yml && conda activate pcwm
+# RTX 50 시리즈(Blackwell)는 CUDA 12.8 이상으로 빌드된 PyTorch가 필요하다.
+name: pcwm
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu128
+      - torch==2.11.0+cu128
+      - torchvision==0.26.0+cu128
+      # env 래퍼가 _mat_map, _update_time, _player.inventory 등 내부 속성에 기대므로 버전 고정
+      - crafter==1.8.3
+      - numpy==2.4.6
+      - pillow==12.3.0
+      - imageio==2.38.0
+      - pygame==2.6.1
+      - pyyaml==6.0.3
+      - wandb==0.30.0
+      - matplotlib==3.10.9
+      - pytest==9.1.1

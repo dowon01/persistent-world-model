@@ -1,0 +1,7 @@
+# 학습 데이터 수집
+out_dir: data/train
+frames: 300000          # 목표 프레임 수 (우선 30만, 필요시 50만으로)
+episode_length: 1000    # crafter length (사망 시 더 짧아짐)
+scripted_ratio: 0.5     # scripted 정책 에피소드 비율
+seed_base: 0            # 에피소드 i의 env seed = seed_base + i. 평가 시나리오는 1_000_000부터 (겹치지 않게)
+workers: 12

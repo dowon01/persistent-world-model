@@ -1,0 +1,22 @@
+# 데이터·학습 결과 (data/는 src/collect.py, src/scenarios.py로 다시 만들 수 있음)
+data/
+outputs/
+wandb/
+*.pt
+*.pth
+*.npz
+*.log
+*.pid
+
+# 작업 메모·계획 (공개하지 않음)
+CLAUDE.md
+PROJECT_PLAN.md
+report/design_notes.md
+report/phase1_guide.md
+.claude/
+
+# 기타
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store

@@ -1,0 +1,31 @@
+# Phase 1 memory M1 (본 모델: 검색 프레임을 8px 단위로 정렬해 입력). baseline과 같은 설정 + memory
+name: memory_aligned
+data_dir: data/train
+out_dir: outputs/memory_aligned
+seed: 0
+model:
+  context: 4
+  channels: [32, 64, 128, 256]   # 최상위 64채널은 3 it/s로 너무 느림 (32: 6.7 it/s, 16.9M)
+  blocks: 2
+  cond_dim: 256
+  memory:
+    mode: aligned
+    mix: [0.5, 0.3, 0.2]   # 배치 구성 (일반, 과거 지형이 드러남, 바뀐 타일이 드러남)
+    drop: 0.2              # memory를 비우는 확률
+train:
+  steps: 80000
+  batch: 64
+  lr: 2.0e-4
+  warmup: 1000
+  weight_decay: 0.01
+  grad_clip: 1.0
+  l1_weight: 1.0       # loss = MSE + l1_weight * L1
+  unroll: 1            # >1이면 자기 예측(detach)을 context에 넣어 U스텝 unroll 학습
+  ctx_noise: 0.1       # context 프레임에 더하는 가우시안 노이즈 표준편차 상한 (0이면 끔)
+  log_every: 100
+  eval_every: 5000
+  ckpt_every: 5000
+eval:
+  horizons: [1, 5, 10, 20, 50]
+  rollout_len: 50
+  num_rollouts: 64
