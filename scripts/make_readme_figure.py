@@ -13,7 +13,7 @@ import numpy as np  # noqa: E402
 LINES = [  # (results.csv의 config, 범례, 스타일)
     ('memory_aligned_v3@80000+oracle_pos', 'Memory + true position (upper bound)', dict(color='#2ca02c', ls='--', marker='')),
     ('memory_aligned_v3@80000', 'Memory (ours)', dict(color='#2ca02c', marker='o')),
-    ('baseline_k16@80000', 'Baseline, 16-frame context', dict(color='#ff7f0e', marker='s')),
+    ('baseline_v2_k16@80000', 'Baseline, 16-frame context', dict(color='#ff7f0e', marker='s')),
     ('baseline_v2@80000', 'Baseline, 4-frame context', dict(color='#d62728', marker='^')),
     ('-', 'Copy last frame', dict(color='gray', marker='x', ls=':')),
 ]
@@ -39,7 +39,7 @@ for cfg, label, style in LINES:
 ax.set_xscale('log', base=2)
 ax.set_xticks(Ns, [str(n) for n in Ns])
 ax.set_ylim(-0.03, 1.03)
-ax.set_xlabel('N = steps the placed block stayed out of view')
+ax.set_xlabel('N = frames the placed block stayed out of view')
 ax.set_ylabel('block remembered when it comes back into view')
 ax.grid(alpha=0.3)
 ax.legend(fontsize=8, loc='center right')

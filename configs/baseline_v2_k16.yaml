@@ -1,0 +1,29 @@
+# Phase 1 baseline: 결정론적 UNet — v2: 상호작용 샘플링 + 바뀐 칸 가중치 — context만 K=16으로 변경
+name: baseline_v2_k16
+data_dir: data/train
+out_dir: outputs/baseline_v2_k16
+seed: 0
+model:
+  context: 16
+  channels: [32, 64, 128, 256]   # 최상위 64채널은 3 it/s로 너무 느림 (32: 6.7 it/s, 16.9M)
+  blocks: 2
+  cond_dim: 256
+train:
+  steps: 80000
+  batch: 64
+  lr: 2.0e-4
+  warmup: 1000
+  weight_decay: 0.01
+  grad_clip: 1.0
+  l1_weight: 1.0       # loss = MSE + l1_weight * L1
+  unroll: 1            # >1이면 자기 예측(detach)을 context에 넣어 U스텝 unroll 학습
+  ctx_noise: 0.1       # context 프레임에 더하는 가우시안 노이즈 표준편차 상한 (0이면 끔)
+  mix: {all: 0.7, inter_ok: 0.2, inter_fail: 0.1}   # 배치 비율 (풀: all 일반, inter_ok 상호작용 성공, inter_fail 실패, mem_* memory용)
+  change_weight: 10.0  # 픽셀 가중치 w = 1 + λ·(재질이 바뀐 칸, 성공 시 인벤토리 줄)
+  log_every: 100
+  eval_every: 5000
+  ckpt_every: 5000
+eval:
+  horizons: [1, 5, 10, 20, 50]
+  rollout_len: 50
+  num_rollouts: 64

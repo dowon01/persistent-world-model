@@ -22,6 +22,7 @@ import argparse
 import multiprocessing as mp
 import pathlib
 import sys
+import zlib
 
 import numpy as np
 
@@ -92,7 +93,7 @@ def find_change(run, kind, rng):
 
 def generate(args):
   kind, N, idx, K = args
-  seed = SEED_BASE + hash((kind, N, idx)) % 10_000_000
+  seed = SEED_BASE + zlib.crc32(f'{kind}/{N}/{idx}'.encode()) % 10_000_000  # hash()는 실행마다 달라 재현되지 않는다
   rng = np.random.default_rng(seed)
   env = CrafterEnv(seed=seed, length=10000)
   env.reset()
